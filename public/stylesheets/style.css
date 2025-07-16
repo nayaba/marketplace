@@ -6,3 +6,16 @@ form {
     display: flex;
     flex-direction: column;
 }
+
+.listing-img {
+    width: 50vw;
+}
+ul {
+    margin: 0px;
+    padding: 0px
+}
+
+li {
+    list-style: none;
+    text-align: center;
+}
