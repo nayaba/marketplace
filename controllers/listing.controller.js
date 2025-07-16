@@ -1,16 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const Listing = require('../models/listing')
+const isSignedIn = require('../middleware/is-signed-in')
 
 
 // VIEW NEW LISTING FORM
-router.get('/new', (req, res) => {
+router.get('/new', isSignedIn, (req, res) => {
     res.render('listings/new.ejs')
 })
 
 // POST FORM DATA TO DATABASE
-// note to come back to isSignedIn
-router.post('/', async (req, res) => {
+router.post('/', isSignedIn, async (req, res) => {
     try {
         req.body.seller = req.session.user._id
         await Listing.create(req.body)
