@@ -14,9 +14,14 @@
     <img src="<%= foundListing.image %>" class="listing-img" alt="Image of <%= foundListing.title %>" />
 
     <% if (foundListing.seller._id.equals(user._id)) { %>
-        <form action="/listings/<%= foundListing._id %>?_method=DELETE" method="POST">
-            <button type="submit">Delete</button>
-        </form>
+        <div class="actions">
+            <form action="/listings/<%= foundListing._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+            <a href="/listings/<%= foundListing._id %>/edit">
+                <button id="edit-button">Edit</button>
+            </a>
+        </div>
     <% } %>
 </body>
 </html>

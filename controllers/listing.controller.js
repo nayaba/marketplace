@@ -50,9 +50,31 @@ router.delete('/:listingId', async (req, res) => {
     if (foundListing.seller._id.equals(req.session.user._id)) {
         // delete the listing and redirect
         await foundListing.deleteOne()
-        res.redirect('/listings')
+        return res.redirect('/listings')
     }
     return res.send('Not authorized')
+})
+
+// RENDER THE EDIT FORM VIEW
+router.get('/:listingId/edit', async (req, res) => {
+    const foundListing = await Listing.findById(req.params.listingId).populate('seller')
+
+    if (foundListing.seller._id.equals(req.session.user._id)) {
+        return res.render('listings/edit.ejs', { foundListing: foundListing} )
+    } 
+        return res.send('Not authorized')
+   
+
+})
+
+router.put('/:listingId', async (req, res) => {
+    const foundListing = await Listing.findById(req.params.listingId).populate('seller')
+    if (foundListing.seller._id.equals(req.session.user._id)) {
+        await Listing.findByIdAndUpdate(req.params.listingId, req.body, { new: true })
+        return res.redirect(`/listings/${req.params.listingId}`)
+    } 
+        return res.send('Not authorized')
+   
 })
 
 module.exports = router
