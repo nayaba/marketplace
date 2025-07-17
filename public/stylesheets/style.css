@@ -1,12 +1,13 @@
 body {
     background-color: cornsilk;
+    text-align: center;
 }
 
-form {
+/* form {
     display: flex;
     flex-direction: column;
     width: 90vw;
-}
+} */
 
 .listing-img {
     width: 50vw;
