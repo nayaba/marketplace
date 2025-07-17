@@ -30,9 +30,29 @@ router.get('/', async (req, res) => {
 
 // VIEW A SINGLE LISTING (SHOW PAGE)
 router.get('/:listingId', async (req, res) => {
+    try {
+        const foundListing = await Listing.findById(req.params.listingId).populate('seller')
+        console.log(foundListing)
+        console.log(req.session.user)
+        console.log(foundListing.seller._id.equals(req.session.user._id))
+        res.render('listings/show.ejs', { foundListing: foundListing })
+    } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+})
+
+// DELETE LISTING FROM DATABASE
+router.delete('/:listingId', async (req, res) => {
+    // find the listing
     const foundListing = await Listing.findById(req.params.listingId).populate('seller')
-    console.log(foundListing)
-    res.render('listings/show.ejs', { foundListing: foundListing })
+    // check if the logged in user owns the listing
+    if (foundListing.seller._id.equals(req.session.user._id)) {
+        // delete the listing and redirect
+        await foundListing.deleteOne()
+        res.redirect('/listings')
+    }
+    return res.send('Not authorized')
 })
 
 module.exports = router
